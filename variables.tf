@@ -67,9 +67,9 @@ EOT
       filter = optional(object({
         item = optional(object({
           address = optional(string)
-          type    = optional(string, "AgentAddress")
+          type    = optional(string) # Default: "AgentAddress"
         }))
-        type = optional(string, "Include")
+        type = optional(string) # Default: "Include"
       }))
       included_ip_addresses = optional(set(string))
       name                  = string
@@ -78,10 +78,10 @@ EOT
     })
     test_configuration = object({
       http_configuration = optional(object({
-        method       = optional(string, "Get")
+        method       = optional(string) # Default: "Get"
         path         = optional(string)
         port         = optional(number)
-        prefer_https = optional(bool, false)
+        prefer_https = optional(bool) # Default: false
         request_header = optional(object({
           name  = string
           value = string
@@ -89,7 +89,7 @@ EOT
         valid_status_code_ranges = optional(set(string))
       }))
       icmp_configuration = optional(object({
-        trace_route_enabled = optional(bool, true)
+        trace_route_enabled = optional(bool) # Default: true
       }))
       name                 = string
       preferred_ip_version = optional(string)
@@ -101,13 +101,13 @@ EOT
       tcp_configuration = optional(object({
         destination_port_behavior = optional(string)
         port                      = number
-        trace_route_enabled       = optional(bool, true)
+        trace_route_enabled       = optional(bool) # Default: true
       }))
-      test_frequency_in_seconds = optional(number, 60)
+      test_frequency_in_seconds = optional(number) # Default: 60
     })
     test_group = object({
       destination_endpoints    = set(string)
-      enabled                  = optional(bool, true)
+      enabled                  = optional(bool) # Default: true
       name                     = string
       source_endpoints         = set(string)
       test_configuration_names = set(string)
