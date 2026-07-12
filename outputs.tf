@@ -1,3 +1,7 @@
+output "network_connection_monitors_id" {
+  description = "Map of id values across all network_connection_monitors, keyed the same as var.network_connection_monitors"
+  value       = { for k, v in azurerm_network_connection_monitor.network_connection_monitors : k => v.id }
+}
 output "network_connection_monitors_endpoint" {
   description = "Map of endpoint values across all network_connection_monitors, keyed the same as var.network_connection_monitors"
   value       = { for k, v in azurerm_network_connection_monitor.network_connection_monitors : k => v.endpoint }
