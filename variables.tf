@@ -67,9 +67,9 @@ EOT
       filter = optional(object({
         item = optional(list(object({
           address = optional(string)
-          type    = optional(string) # Default: "AgentAddress"
+          type    = optional(string)
         })))
-        type = optional(string) # Default: "Include"
+        type = optional(string)
       }))
       included_ip_addresses = optional(set(string))
       name                  = string
@@ -78,10 +78,10 @@ EOT
     }))
     test_configuration = list(object({
       http_configuration = optional(object({
-        method       = optional(string) # Default: "Get"
+        method       = optional(string)
         path         = optional(string)
         port         = optional(number)
-        prefer_https = optional(bool) # Default: false
+        prefer_https = optional(bool)
         request_header = optional(list(object({
           name  = string
           value = string
@@ -89,7 +89,7 @@ EOT
         valid_status_code_ranges = optional(set(string))
       }))
       icmp_configuration = optional(object({
-        trace_route_enabled = optional(bool) # Default: true
+        trace_route_enabled = optional(bool)
       }))
       name                 = string
       preferred_ip_version = optional(string)
@@ -101,17 +101,41 @@ EOT
       tcp_configuration = optional(object({
         destination_port_behavior = optional(string)
         port                      = number
-        trace_route_enabled       = optional(bool) # Default: true
+        trace_route_enabled       = optional(bool)
       }))
-      test_frequency_in_seconds = optional(number) # Default: 60
+      test_frequency_in_seconds = optional(number)
     }))
     test_group = list(object({
       destination_endpoints    = set(string)
-      enabled                  = optional(bool) # Default: true
+      enabled                  = optional(bool)
       name                     = string
       source_endpoints         = set(string)
       test_configuration_names = set(string)
     }))
   }))
+  validation {
+    condition = alltrue([
+      for k, v in var.network_connection_monitors : (
+        length(v.endpoint) >= 1
+      )
+    ])
+    error_message = "Each endpoint list must contain at least 1 items"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.network_connection_monitors : (
+        length(v.test_configuration) >= 1
+      )
+    ])
+    error_message = "Each test_configuration list must contain at least 1 items"
+  }
+  validation {
+    condition = alltrue([
+      for k, v in var.network_connection_monitors : (
+        length(v.test_group) >= 1
+      )
+    ])
+    error_message = "Each test_group list must contain at least 1 items"
+  }
 }
 
